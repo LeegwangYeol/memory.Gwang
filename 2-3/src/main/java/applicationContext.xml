@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver"
+		p:url="jdbc:oracle:thin:@localhost:1521:xe"
+		p:username="hr"
+		p:password="hr">
+	</bean>
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:mybatis-config.xml">
+	</bean>
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="teamDao" 	class="dao.impl.TeamDaoImpl"
+		p:session-ref="sqlSession"></bean>
+	<bean id="playerDao"	class="dao.impl.PlayerDaoImpl"
+		p:session-ref="sqlSession">
+	</bean>
+	<bean id="selectTeamUi"	class="ui.SelectTeamUi"
+		p:teamDao-ref="teamDao">
+	</bean>
+	<bean id="insertPlayerUi" class="ui.InsertPlayerUi"
+		p:playerDao-ref="playerDao" p:teamDao-ref="teamDao">
+	</bean>
+	<bean id="deletePlayerUi" class="ui.DeletePlayerUi"
+		p:playerDao-ref="playerDao">
+	</bean>
+	<bean id="updatePlayerUi" class="ui.UpdatePlayerUi"
+		p:playerDao-ref="playerDao" p:teamDao-ref="teamDao">
+	</bean>
+	<bean id="selectPlayerUi" class="ui.SelectPlayerUi"
+		p:deletePlayerUi-ref="deletePlayerUi" p:playerDao-ref="playerDao" 
+		p:updatePlayerUi-ref="updatePlayerUi">
+	</bean>
+	<bean id="menuUi" class="ui.MenuUi"
+		p:insertPlayerUi-ref="insertPlayerUi" 
+		p:selectPlayerUi-ref="selectPlayerUi"
+		p:selectTeamUi-ref="selectTeamUi">
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+

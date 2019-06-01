@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Test">
+	<select id="getTeamPlayer" resultType="model.PlayerTeam"
+					parameterType="Integer">
+		select player_id, player.name as playerName, team.team_id,
+				team.name as teamName from player, team
+		where player.team_id = team.team_id and team.team_id = #{team_id}
+	</select>
+	<select id="getPlayerTeam" resultType="model.PlayerTeam"
+					parameterType="Integer">
+		select player_id, player.name as playerName, team.team_id,
+				team.name as teamName from player, team
+		where player.team_id = team.team_id and player_id=#{player_id}
+	</select>
+	<update id="updatePlayer" parameterType="model.Player">
+		update player set name=#{name}, team_id=#{team_id}
+		where player_id = #{player_id}
+	</update>
+	<delete id="deletePlayer" parameterType="Integer">
+		delete from player where player_id = #{player_id}
+	</delete>
+	<select id="getPlayer" resultType="model.Player" parameterType="Integer">
+		select * from player where player_id = #{player_id}
+	</select>
+	<select id="getPlayerList" resultType="model.Player" 
+								parameterType="Integer">
+		select * from player where team_id = #{team_id}
+	</select>
+
+	<insert id="putPlayer" parameterType="model.Player">
+		insert into player values(#{player_id},#{name},#{team_id})
+	</insert>
+	<select id="getTeam" resultType="model.Team" parameterType="Integer">
+		select team_id, name from team where team_id = #{team_id}
+	</select>
+	<select id="getTeamList" resultType="model.Team">
+		select team_id, name from team
+	</select>
+</mapper>	
+
+
+
+
+
